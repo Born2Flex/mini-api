@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  notes_db:
+    image: "postgres:17.2"
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: notes_db
+    volumes:
+      - notes-data:/var/lib/postgres/data
+volumes:
+  notes-data:

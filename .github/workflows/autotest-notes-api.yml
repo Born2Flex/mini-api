@@ -14,6 +14,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Start PostgreSQL via Docker Compose
+        run: docker-compose up -d
+
+      - name: Wait for Postgres to be ready
+        run: |
+          until docker-compose exec postgres pg_isready -U postgres; do
+            echo "Waiting for Postgres to be ready…"
+            sleep 2
+          done
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
