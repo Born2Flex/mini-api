@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { NoteController } from './note.controller';
-import { NoteService } from './note.service';
+import { NotesController } from './notesController';
+import { NotesService } from './notes.service';
 import { Note } from './entity/note.entity';
-import { NoteMapper } from './note.mapper';
+import { NotesMapper } from './notes-mapper.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Note])],
-  controllers: [NoteController],
+  controllers: [NotesController],
   providers: [
-    NoteMapper,
-    NoteService
+    NotesMapper,
+    NotesService
   ],
 })
 export class NoteModule {}

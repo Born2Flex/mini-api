@@ -4,14 +4,14 @@ import { Repository } from 'typeorm';
 import { validate } from 'uuid';
 import { Note } from './entity/note.entity';
 import { ICreateNoteDto, INoteDto, INoteListDto, IUpdateNoteDto } from './dto/note.dto';
-import { NoteMapper } from './note.mapper';
+import { NotesMapper } from './notes-mapper.service';
 
 @Injectable()
-export class NoteService {
+export class NotesService {
   constructor(
     @InjectRepository(Note)
     private readonly repository: Repository<Note>,
-    private readonly mapper: NoteMapper
+    private readonly mapper: NotesMapper
   ) {}
 
   async findAllNotes(): Promise<INoteListDto> {

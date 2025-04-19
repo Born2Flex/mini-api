@@ -2,12 +2,12 @@ import { Controller, Get, Post, Put, Delete, Param, Body, HttpStatus, HttpCode }
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ICreateNoteDto, INoteDto, INoteListDto, IUpdateNoteDto } from './dto/note.dto';
 import { CreateNoteDto, NoteDto, NoteListDto, UpdateNoteDto } from './dto/swagger.dto';
-import { NoteService } from './note.service';
+import { NotesService } from './notes.service';
 
 @ApiTags('notes')
 @Controller('notes')
-export class NoteController {
-  constructor(private readonly service: NoteService) {}
+export class NotesController {
+  constructor(private readonly service: NotesService) {}
 
   @Get()
   @ApiOperation({ summary: 'Get all notes' })
