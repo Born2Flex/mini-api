@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, HttpStatus, HttpCode } from '@nestjs/common';
-import { NoteService } from './note.service';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ICreateNoteDto, INoteDto, INoteListDto, IUpdateNoteDto } from './dto/note.dto';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreateNoteDto, NoteDto, NoteListDto, UpdateNoteDto } from './dto/swagger.dto';
+import { NoteService } from './note.service';
 
 @ApiTags('notes')
 @Controller('notes')
@@ -10,6 +11,7 @@ export class NoteController {
 
   @Get()
   @ApiOperation({ summary: 'Get all notes' })
+  @ApiResponse({ status: 200, description: 'List of notes', type: NoteListDto })
   @ApiResponse({ status: 200, description: 'List of notes' })
   async findAllNotes(): Promise<INoteListDto> {
     return await this.service.findAllNotes();
@@ -18,6 +20,7 @@ export class NoteController {
   @Get(':id')
   @ApiOperation({ summary: 'Get a note by ID' })
   @ApiParam({ name: 'id', description: 'Note ID' })
+  @ApiResponse({ status: 200, description: 'Found note', type: NoteDto })
   @ApiResponse({ status: 200, description: 'Found note' })
   @ApiResponse({ status: 404, description: 'Note not found' })
   async findNoteById(@Param('id') id: string): Promise<INoteDto> {
@@ -27,7 +30,8 @@ export class NoteController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create a new note' })
-  @ApiResponse({ status: 201, description: 'The note has been successfully created.' })
+  @ApiBody({ type: CreateNoteDto })
+  @ApiResponse({ status: 201, description: 'The note has been successfully created.', type: NoteDto })
   async createNote(@Body() dto: ICreateNoteDto): Promise<INoteDto> {
     return this.service.createNote(dto);
   }
@@ -35,6 +39,8 @@ export class NoteController {
   @Put(':id')
   @ApiOperation({ summary: 'Update a note' })
   @ApiParam({ name: 'id', description: 'Note ID' })
+  @ApiBody({ type: UpdateNoteDto })
+  @ApiResponse({ status: 200, description: 'Updated note', type: NoteDto })
   @ApiResponse({ status: 200, description: 'Updated note' })
   @ApiResponse({ status: 404, description: 'Note not found' })
   async updateNote(@Param('id') id: string, @Body() dto: IUpdateNoteDto): Promise<INoteDto> {
