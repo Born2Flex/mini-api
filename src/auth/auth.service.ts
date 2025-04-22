@@ -1,4 +1,39 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { UsersService } from '../users/users.service';
+import { LoginDto } from '../users/dto/user.dto';
+import * as bcrypt from 'bcrypt';
+import { CustomSession } from './interfaces/session.interface';
 
 @Injectable()
-export class AuthService {}
+export class AuthService {
+  constructor(private readonly usersService: UsersService) {}
+
+  async login(loginDto: LoginDto, session: CustomSession): Promise<void> {
+    const user = await this.usersService.findUserByEmail(loginDto.email);
+    
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const isPasswordValid = await bcrypt.compare(loginDto.password, user.password);
+    
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    // Store user ID in session
+    session.userId = user.id;
+  }
+
+  async logout(session: CustomSession): Promise<void> {
+    return new Promise((resolve, reject) => {
+      session.destroy((err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+}
