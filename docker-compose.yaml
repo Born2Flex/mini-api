@@ -15,5 +15,9 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+  redis-cache:
+    image: 'redis:7.4.2'
+    ports:
+      - "6379:6379"
 volumes:
   notes-data:

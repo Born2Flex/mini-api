@@ -1,12 +1,15 @@
 import { Note } from './entity/note.entity';
-import {ICreateNoteDto, INoteDto, INoteListDto} from './dto/note.dto';
+import { ICreateNoteDto, INoteDto, INoteListDto } from './dto/note.dto';
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class NotesMapper {
   toDto(note: Note): INoteDto {
-    const { id, title, content } = note;
-    return { id, title, content };
+    return {
+      id: note.id,
+      title: note.title,
+      content: note.content
+    };
   }
 
   toListDto(notes: Note[]): INoteListDto {

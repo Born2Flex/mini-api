@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
-import { NoteModule } from "./notes/note.module";
+import { NotesModule } from "./notes/notes.module";
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { UsersModule } from "./users/users.module";
+import { AuthModule } from './auth/auth.module';
+import { databaseConfig } from './config/database.config';
 
 @Module({
   imports: [
@@ -11,20 +14,11 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
-        return {
-          type: 'postgres',
-          host: config.get<string>('DB_HOST'),
-          port: config.get<number>('DB_PORT'),
-          username: config.get<string>('DB_USER'),
-          password: config.get<string>('DB_PASS'),
-          database: config.get<string>('DB_NAME'),
-          entities: [__dirname + '/**/*.entity{.ts,.js}'],
-          synchronize: true,
-        };
-      },
+      useFactory: databaseConfig,
     }),
-    NoteModule
+    NotesModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { validate } from 'uuid';
 import { Note } from './entity/note.entity';
 import { ICreateNoteDto, INoteDto, INoteListDto, IUpdateNoteDto } from './dto/note.dto';
-import { NotesMapper } from './notes-mapper.service';
+import { NotesMapper } from './notes.mapper';
 
 @Injectable()
 export class NotesService {
