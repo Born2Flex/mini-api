@@ -3,7 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { validate } from 'uuid';
 import { Note } from './entity/note.entity';
-import { ICreateNoteDto, INoteDto, INoteListDto, IUpdateNoteDto } from './dto/note.dto';
+import { INoteDto } from './dto/note.dto';
+import { INoteListDto } from './dto/note-list.dto';
+import { ICreateNoteDto } from './dto/create-note.dto';
+import { IUpdateNoteDto } from './dto/update-note.dto';
+import { IDeleteResultDto } from './dto/delete-result.dto';
 import { NotesMapper } from './notes.mapper';
 
 @Injectable()
@@ -36,7 +40,7 @@ export class NotesService {
     return this.findNoteById(id);
   }
 
-  async deleteNoteById(id: string): Promise<{ success: boolean }> {
+  async deleteNoteById(id: string): Promise<IDeleteResultDto> {
     await this.findByIdOrElseThrow(id);
     await this.repository.delete(id);
     return { success: true };

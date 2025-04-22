@@ -1,5 +1,7 @@
 import { Note } from './entity/note.entity';
-import { ICreateNoteDto, INoteDto, INoteListDto } from './dto/note.dto';
+import { INoteDto } from './dto/note.dto';
+import { INoteListDto } from './dto/note-list.dto';
+import { ICreateNoteDto } from './dto/create-note.dto';
 import { Injectable } from "@nestjs/common";
 
 @Injectable()

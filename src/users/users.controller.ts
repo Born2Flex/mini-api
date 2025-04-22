@@ -1,8 +1,9 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { UsersService } from './users.service';
-import { RegistrationDto, UserDto } from "./dto/user.dto";
-import { SessionGuard } from '../auth/guards/session.guard';
+import { UserDto } from "./dto/user.dto";
+import { RegistrationDto } from "./dto/registration.dto";
+import { SessionGuard } from "../utils/guards/session.guard";
 
 @UseGuards(SessionGuard)
 @Controller('users')

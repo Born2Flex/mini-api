@@ -1,7 +1,10 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, HttpStatus, HttpCode } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ICreateNoteDto, INoteDto, INoteListDto, IUpdateNoteDto } from './dto/note.dto';
-import { CreateNoteDto, NoteDto, NoteListDto, UpdateNoteDto } from './dto/swagger.dto';
+import { INoteDto, NoteDto } from './dto/note.dto';
+import { INoteListDto, NoteListDto } from './dto/note-list.dto';
+import { ICreateNoteDto, CreateNoteDto } from './dto/create-note.dto';
+import { IUpdateNoteDto, UpdateNoteDto } from './dto/update-note.dto';
+import { IDeleteResultDto, DeleteResultDto } from './dto/delete-result.dto';
 import { NotesService } from './notes.service';
 
 @ApiTags('notes')
@@ -50,9 +53,9 @@ export class NotesController {
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a note' })
   @ApiParam({ name: 'id', description: 'Note ID' })
-  @ApiResponse({ status: 200, description: 'Deletion result', schema: { example: { success: true } } })
+  @ApiResponse({ status: 200, description: 'Deletion result', type: DeleteResultDto })
   @ApiResponse({ status: 404, description: 'Note not found' })
-  async deleteNoteById(@Param('id') id: string): Promise<{ success: boolean }> {
+  async deleteNoteById(@Param('id') id: string): Promise<IDeleteResultDto> {
     return this.service.deleteNoteById(id);
   }
 }

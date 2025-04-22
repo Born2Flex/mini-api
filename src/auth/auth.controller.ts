@@ -1,9 +1,9 @@
-import {Controller, Post, Body, Req, HttpCode} from '@nestjs/common';
-import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
-import {AuthService} from './auth.service';
-import {LoginDto} from '../users/dto/user.dto';
-import {Request} from 'express';
-import {CustomSession} from './interfaces/session.interface';
+import { Controller, Post, Body, Req, HttpCode } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { AuthService } from './auth.service';
+import { Request } from 'express';
+import { LoginDto } from "./dto/login.dto";
+import { CustomSession } from "../utils/guards/session.interface";
 
 @ApiTags('Authentication')
 @Controller('auth')

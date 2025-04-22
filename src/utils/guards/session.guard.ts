@@ -1,6 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
-import { CustomSession } from '../interfaces/session.interface';
+import { CustomSession } from "./session.interface";
 
 @Injectable()
 export class SessionGuard implements CanActivate {

@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import session from 'express-session';
+import { createRedisStore, getSessionConfig } from '../config/redis.config';
 
 @Module({
   imports: [UsersModule, ConfigModule],
@@ -15,18 +16,11 @@ export class AuthModule implements NestModule {
   }
 
   async configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(
-        session({
-          secret: this.configService.get<string>('SESSION_SECRET', 'your-secret-key'),
-          resave: false,
-          saveUninitialized: false,
-          cookie: {
-            secure: this.configService.get<string>('NODE_ENV') === 'production',
-            httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000,
-          },
-        }),
+    const redisStore = await createRedisStore(this.configService);
+    const sessionConfig = getSessionConfig(this.configService, redisStore);
+
+    consumer.apply(
+        session(sessionConfig)
       )
       .forRoutes('*');
   }
