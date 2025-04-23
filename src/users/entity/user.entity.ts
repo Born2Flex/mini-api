@@ -12,6 +12,12 @@ export class User {
   @Column()
   password: string;
 
+  @Column({ nullable: true })
+  firstName: string;
+
+  @Column({ nullable: true })
+  lastName: string;
+
   @BeforeInsert()
   async hashPassword() {
     const salt = await bcrypt.genSalt();

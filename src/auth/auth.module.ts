@@ -5,11 +5,22 @@ import { UsersModule } from '../users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import session from 'express-session';
 import { createRedisStore, getSessionConfig } from '../config/redis.config';
+import { PassportModule } from '@nestjs/passport';
+import { GoogleStrategy } from './strategies/google.strategy';
+import googleAuthConfig from "../config/google-auth.config";
 
 @Module({
-  imports: [UsersModule, ConfigModule],
+  imports: [
+    UsersModule,
+    ConfigModule,
+    PassportModule.register({ session: true }),
+    ConfigModule.forFeature(googleAuthConfig)
+  ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [
+    AuthService,
+    GoogleStrategy
+  ],
 })
 export class AuthModule implements NestModule {
   constructor(private readonly configService: ConfigService) {

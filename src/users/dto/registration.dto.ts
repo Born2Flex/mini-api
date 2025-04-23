@@ -12,4 +12,18 @@ export class RegistrationDto {
     example: 'password123',
   })
   password: string;
+
+  @ApiProperty({
+    description: 'The first name of the user',
+    example: 'John',
+    required: false,
+  })
+  firstName?: string;
+
+  @ApiProperty({
+    description: 'The last name of the user',
+    example: 'Doe',
+    required: false,
+  })
+  lastName?: string;
 }
