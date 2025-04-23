@@ -1,18 +1,11 @@
-import {Injectable, UnauthorizedException} from '@nestjs/common';
-import {UsersService} from '../users/users.service';
-import {LoginDto} from "./dto/login.dto";
-import {CustomSession} from "../utils/guards/session.interface";
+import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import { UsersService } from '../users/users.service';
+import { LoginDto } from "./dto/login.dto";
+import { CustomSession } from "./session/session.interface";
+import { UserDto } from "../users/dto/user.dto";
+import { User } from '../users/entity/user.entity';
+import { GoogleUser } from "./dto/google-user.dto";
 import * as bcrypt from 'bcrypt';
-import {UserDto} from "../users/dto/user.dto";
-import {User} from '../users/entity/user.entity';
-
-interface GoogleUser {
-  email: string;
-  firstName: string;
-  lastName: string;
-  picture: string;
-  accessToken: string;
-}
 
 @Injectable()
 export class AuthService {
@@ -35,12 +28,11 @@ export class AuthService {
   }
 
   async logout(session: CustomSession): Promise<void> {
-    try {
-      await new Promise<void>((resolve) => session.destroy(resolve));
-    } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      throw new Error(`Failed to destroy session: ${errorMessage}`);
-    }
+    await new Promise<void>((resolve, reject) =>
+        session.destroy(err => (err ? reject(err) : resolve())),
+    ).catch((err) => {
+      throw new InternalServerErrorException(`Failed to destroy session: ${err?.message ?? 'unknown'}`);
+    });
   }
 
   async validateGoogleUser(googleUser: GoogleUser): Promise<UserDto> {

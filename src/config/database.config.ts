@@ -1,7 +1,17 @@
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 
-export const databaseConfig = (config: ConfigService): TypeOrmModuleOptions => ({
+export interface DatabaseConfig {
+  type: 'postgres';
+  host: string;
+  port: number;
+  username: string;
+  password: string;
+  database: string;
+  entities: string[];
+  synchronize: boolean;
+}
+
+export const databaseConfig = (config: ConfigService): DatabaseConfig => <DatabaseConfig>({
   type: 'postgres',
   host: config.get<string>('DB_HOST'),
   port: config.get<number>('DB_PORT'),

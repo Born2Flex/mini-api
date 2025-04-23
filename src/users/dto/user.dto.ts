@@ -12,4 +12,16 @@ export class UserDto {
     example: 'user@example.com',
   })
   email: string;
+
+  @ApiProperty({
+    description: 'FirstName of the user',
+    example: 'John',
+  })
+  firstName: string;
+
+  @ApiProperty({
+    description: 'LastName of the user',
+    example: 'Doe',
+  })
+  lastName: string;
 }

@@ -3,18 +3,16 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import session from 'express-session';
 import { createRedisStore, getSessionConfig } from '../config/redis.config';
 import { PassportModule } from '@nestjs/passport';
 import { GoogleStrategy } from './strategies/google.strategy';
-import googleAuthConfig from "../config/google-auth.config";
+import session from 'express-session';
 
 @Module({
   imports: [
     UsersModule,
     ConfigModule,
-    PassportModule.register({ session: true }),
-    ConfigModule.forFeature(googleAuthConfig)
+    PassportModule.register({ session: true })
   ],
   controllers: [AuthController],
   providers: [
@@ -22,9 +20,9 @@ import googleAuthConfig from "../config/google-auth.config";
     GoogleStrategy
   ],
 })
+
 export class AuthModule implements NestModule {
-  constructor(private readonly configService: ConfigService) {
-  }
+  constructor(private readonly configService: ConfigService) {}
 
   async configure(consumer: MiddlewareConsumer) {
     const redisStore = await createRedisStore(this.configService);

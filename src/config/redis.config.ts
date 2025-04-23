@@ -2,7 +2,13 @@ import { ConfigService } from '@nestjs/config';
 import { createClient } from 'redis';
 import { RedisStore } from 'connect-redis';
 
-const redisConfig = (config: ConfigService) => ({
+export interface RedisConfig {
+  url: string;
+  password?: string;
+  tls?: Record<string, unknown> | undefined;
+}
+
+export const redisConfig = (config: ConfigService): RedisConfig => ({
   url: config.get<string>('REDIS_URL', 'redis://localhost:6379'),
   password: config.get<string>('REDIS_PASSWORD'),
   tls: config.get<string>('NODE_ENV') === 'production' ? {} : undefined,
