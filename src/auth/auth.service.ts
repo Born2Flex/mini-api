@@ -25,14 +25,11 @@ export class AuthService {
   }
 
   async logout(session: CustomSession): Promise<void> {
-    return new Promise((resolve, reject) => {
-      session.destroy((err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
+    try {
+      await new Promise<void>((resolve) => session.destroy(resolve));
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      throw new Error(`Failed to destroy session: ${errorMessage}`);
+    }
   }
 }

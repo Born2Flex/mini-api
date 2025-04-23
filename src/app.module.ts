@@ -5,6 +5,8 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { UsersModule } from "./users/users.module";
 import { AuthModule } from './auth/auth.module';
 import { databaseConfig } from './config/database.config';
+import { APP_GUARD } from '@nestjs/core';
+import { SessionGuard } from './utils/guards/session.guard';
 
 @Module({
   imports: [
@@ -21,6 +23,11 @@ import { databaseConfig } from './config/database.config';
     AuthModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: SessionGuard,
+    },
+  ],
 })
 export class AppModule {}
